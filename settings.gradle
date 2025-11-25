@@ -5,6 +5,7 @@ pluginManagement {
         mavenCentral()
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,11 +13,14 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter()
         maven { url 'https://jitpack.io' }
+
+        // GitHub Packages для TrustWallet Wallet-Core
         maven {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
-                username = System.getenv("USERNAME") ?: ""
-                password = System.getenv("TOKEN") ?: ""
+                // Используем свойства Gradle, чтобы безопасно передавать токен и username
+                username = findProperty("gpr.user") ?: ""
+                password = findProperty("gpr.token") ?: ""
             }
         }
     }
