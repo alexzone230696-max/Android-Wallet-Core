@@ -13,15 +13,18 @@ dependencyResolutionManagement {
         mavenCentral()
         jcenter()
         maven { url 'https://jitpack.io' }
+
         maven {
-            url = uri("https://maven.pkg.github.com/your-org/your-repo")
+            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+
+            // Берём переменные из системных environment variables
             credentials {
-                username = findProperty("gpr.user") ?: System.getenv("USERNAME") ?: ""
-                password = findProperty("gpr.token") ?: System.getenv("TOKEN") ?: ""
+                username = System.getenv("USERNAME") ?: ""
+                password = System.getenv("TOKEN") ?: ""
             }
         }
     }
 }
 
-rootProject.name = "Android-Wallet-Core"
+rootProject.name = "TrustWalletClone"
 include ':app'
