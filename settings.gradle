@@ -18,6 +18,7 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
+                // Берём USERNAME и TOKEN из environment variables
                 username = System.getenv("USERNAME") ?: ""
                 password = System.getenv("TOKEN") ?: ""
             }
