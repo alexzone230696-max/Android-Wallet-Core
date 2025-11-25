@@ -1,0 +1,43 @@
+name: Android Build
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      # Эти секреты нужно добавить в GitHub репозиторий: Settings → Secrets → Actions
+      GITHUB_USER: ${{ secrets.USERNAME }}
+      GITHUB_TOKEN: ${{ secrets.TOKEN }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        distribution: temurin
+        java-version: 17
+
+    - name: Set up Android SDK
+      uses: android-actions/setup-android@v2
+      with:
+        api-level: 32
+        build-tools: 30.0.3
+
+    - name: Configure Gradle for GitHub Packages
+      run: |
+        echo "GITHUB_USER=${GITHUB_USER}" >> gradle.properties
+        echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> gradle.properties
+
+    - name: Grant execute permission for Gradle wrapper
+      run: chmod +x ./gradlew
+
+    - name: Clean and assemble Release
+      run: ./gradlew clean assembleRelease --no-daemon --stacktrace
