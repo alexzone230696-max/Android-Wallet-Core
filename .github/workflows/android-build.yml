@@ -11,9 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Эти секреты нужно добавить в GitHub репозиторий: Settings → Secrets → Actions
-      GITHUB_USER: ${{ secrets.USERNAME }}
-      GITHUB_TOKEN: ${{ secrets.TOKEN }}
+      # Секреты из GitHub
+      USERNAME: ${{ secrets.USERNAME }}
+      TOKEN: ${{ secrets.TOKEN }}
 
     steps:
     - name: Checkout repository
@@ -31,10 +31,11 @@ jobs:
         api-level: 32
         build-tools: 30.0.3
 
-    - name: Configure Gradle for GitHub Packages
+    - name: Configure Gradle credentials
       run: |
-        echo "GITHUB_USER=${GITHUB_USER}" >> gradle.properties
-        echo "GITHUB_TOKEN=${GITHUB_TOKEN}" >> gradle.properties
+        mkdir -p ~/.gradle
+        echo "USERNAME=$USERNAME" >> ~/.gradle/gradle.properties
+        echo "TOKEN=$TOKEN" >> ~/.gradle/gradle.properties
 
     - name: Grant execute permission for Gradle wrapper
       run: chmod +x ./gradlew
