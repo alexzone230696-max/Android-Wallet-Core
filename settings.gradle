@@ -15,14 +15,12 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
 
         maven {
-            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
-
-            // Берём переменные из системных environment variables
-            credentials {
-                username = System.getenv("USERNAME") ?: ""
-                password = System.getenv("TOKEN") ?: ""
-            }
-        }
+    url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+    credentials {
+        username = System.getenv("USERNAME") ?: ""
+        password = System.getenv("TOKEN") ?: ""
+    }
+}
     }
 }
 
