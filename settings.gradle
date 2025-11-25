@@ -1,7 +1,29 @@
-maven {
-    url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
-    credentials {
-        username = System.getenv("USERNAME")
-        password = System.getenv("TOKEN")
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        google()
+        mavenCentral()
     }
 }
+
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        maven { url 'https://jitpack.io' }
+
+        // GitHub Packages (TrustWallet wallet-core)
+        maven {
+            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+            credentials {
+                username = System.getenv("USERNAME") ?: ""
+                password = System.getenv("TOKEN") ?: ""
+            }
+        }
+    }
+}
+
+rootProject.name = "TrustWalletClone"
+include ':app'
