@@ -14,13 +14,13 @@ dependencyResolutionManagement {
         jcenter()
         maven { url 'https://jitpack.io' }
 
-        // GitHub Packages для TrustWallet Wallet-Core
         maven {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+
+            // Берём переменные из системных environment variables
             credentials {
-                // Используем свойства Gradle, чтобы безопасно передавать токен и username
-                username = findProperty("gpr.user") ?: ""
-                password = findProperty("gpr.token") ?: ""
+                username = System.getenv("USERNAME") ?: ""
+                password = System.getenv("TOKEN") ?: ""
             }
         }
     }
