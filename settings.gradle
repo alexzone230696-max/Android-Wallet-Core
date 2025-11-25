@@ -1,3 +1,7 @@
+// Определяем переменные из секретов или gradle.properties
+def gprUser = findProperty("gpr.user") ?: System.getenv("USERNAME") ?: ""
+def gprToken = findProperty("gpr.token") ?: System.getenv("TOKEN") ?: ""
+
 pluginManagement {
     repositories {
         gradlePluginPortal()
@@ -14,14 +18,14 @@ dependencyResolutionManagement {
         jcenter()
         maven { url 'https://jitpack.io' }
         maven {
-            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+            url = uri("https://maven.pkg.github.com/your-org/your-repo")
             credentials {
-                username = findProperty("gpr.user") ?: System.getenv("USERNAME") ?: ""
-                password = findProperty("gpr.token") ?: System.getenv("TOKEN") ?: ""
+                username = gprUser
+                password = gprToken
             }
         }
     }
 }
 
-rootProject.name = "TrustWalletClone"
+rootProject.name = "YourProjectName"
 include ':app'
