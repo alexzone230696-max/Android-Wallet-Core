@@ -33,13 +33,8 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Inject GitHub Packages credentials
-        run: |
-          echo "githubPackagesUsername=${{ secrets.USERNAME }}" >> $GITHUB_WORKSPACE/gradle.properties
-          echo "githubPackagesToken=${{ secrets.TOKEN }}" >> $GITHUB_WORKSPACE/gradle.properties
-
       - name: Build Release APK
         env:
-          USERNAME: ${{ secrets.USERNAME }}
-          TOKEN: ${{ secrets.TOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}  # GitHub username
+          TOKEN: ${{ secrets.TOKEN }}        # Personal Access Token с read:packages
         run: ./gradlew clean assembleRelease --no-daemon --stacktrace
