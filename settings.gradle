@@ -15,11 +15,13 @@ dependencyResolutionManagement {
         maven {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
-                username = "kolya-957"
-                password = "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"
+                // Рекомендуется использовать переменные окружения для безопасности
+                username = "alexzone230696-max"
+                password = "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"
             }
         }
     }
 }
+
 rootProject.name = "TrustWalletClone"
 include ':app'
