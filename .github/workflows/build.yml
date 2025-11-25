@@ -34,7 +34,8 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Release APK
+        # Передаем секреты в environment variables
         env:
-          USERNAME: ${{ secrets.USERNAME }}  # GitHub username
-          TOKEN: ${{ secrets.TOKEN }}        # Personal Access Token с read:packages
+          USERNAME: ${{ secrets.USERNAME }}
+          TOKEN: ${{ secrets.TOKEN }}
         run: ./gradlew clean assembleRelease --no-daemon --stacktrace
