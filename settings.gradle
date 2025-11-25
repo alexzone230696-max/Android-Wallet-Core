@@ -16,7 +16,7 @@ dependencyResolutionManagement {
             url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
             credentials {
                 username = "alexzone230696-max"
-                password = "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"
+                password = "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"
             }
         }
     }
