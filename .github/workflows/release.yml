@@ -5,6 +5,7 @@ on:
     branches:
       - main
   pull_request:
+  workflow_dispatch:  # ← добавлено, чтобы можно было запускать вручную
 
 jobs:
   build:
@@ -34,8 +35,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build Release APK
-        # Передаем секреты в environment variables
         env:
-          USERNAME: ${{ secrets.USERNAME }}
-          TOKEN: ${{ secrets.TOKEN }}
+          USERNAME: ${{ secrets.USERNAME }}  # GitHub username
+          TOKEN: ${{ secrets.TOKEN }}        # Personal Access Token с read:packages
         run: ./gradlew clean assembleRelease --no-daemon --stacktrace
