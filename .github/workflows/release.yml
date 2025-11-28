@@ -10,10 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
-      GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
-
     steps:
       # --- Checkout ---
       - name: Checkout repository
@@ -46,52 +42,24 @@ jobs:
           key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: gradle-${{ runner.os }}-
 
-      # --- Restore keystore from Base64 ---
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > release.keystore
-
-      # --- Gradle signing config ---
-      - name: Create signing.properties
-        run: |
-          cat <<EOF > ./signing.properties
-          storeFile=release.keystore
-          storePassword=${{ secrets.KEYSTORE_PASSWORD }}
-          keyAlias=${{ secrets.KEY_ALIAS }}
-          keyPassword=${{ secrets.KEY_ALIAS_PASSWORD }}
-          EOF
-
-      # --- Configure GitHub Packages for Gradle ---
-      - name: Configure GitHub Packages for Gradle
-        run: |
-          mkdir -p ~/.gradle
-          cat <<EOF > ~/.gradle/init.gradle
-          allprojects {
-              repositories {
-                  maven {
-                      url = uri('https://maven.pkg.github.com/trustwallet/wallet-core')
-                      credentials {
-                          username = System.getenv("GPR_USERNAME")
-                          password = System.getenv("GPR_TOKEN")
-                      }
-                  }
-                  maven {
-                      url = uri('https://maven.pkg.github.com/gemwalletcom/core')
-                      credentials {
-                          username = System.getenv("GPR_USERNAME")
-                          password = System.getenv("GPR_TOKEN")
-                      }
-                  }
-                  google()
-                  mavenCentral()
-              }
-          }
-          EOF
-
       # --- Permissions ---
       - name: Make Gradlew executable
         run: chmod +x ./gradlew
 
-      # --- Build ---
-      - name: Assemble Release APK
+      # --- Build unsigned APK ---
+      - name: Assemble Release APK (unsigned)
         run: ./gradlew assembleRelease --no-daemon
+
+      # --- List APKs ---
+      - name: List all APKs
+        run: |
+          echo "APK files in build outputs:"
+          find app/build/outputs/apk/ -name "*.apk"
+
+      # --- Upload APKs ---
+      - name: Upload Release APKs
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release-apk
+          path: app/build/outputs/apk/**/*.apk
+          if-no-files-found: warn
